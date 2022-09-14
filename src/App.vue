@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <nav class="navbar bg-light">
+  <nav class="navbar bg-dark navbar-dark">
     <div class="container">
 
       <RouterLink class="navbar-brand" to="/">
@@ -11,14 +11,16 @@ import { RouterLink, RouterView } from 'vue-router'
         PokeAPI
       </RouterLink>
       <div>
-        <RouterLink active-class="active" class="btn btn-outline-primary me-2" to="/">Home</RouterLink>
-        <RouterLink active-class="active" class="btn btn-outline-primary " to="/pokemons">Pokemons</RouterLink>
+        <RouterLink active-class="active" class="btn btn-outline-primary mr-2" to="/">Home</RouterLink>
+        <RouterLink active-class="active" class="btn btn-outline-primary mr-2 " to="/pokemons">Pokemons</RouterLink>
+        <RouterLink active-class="active" class="btn btn-outline-primary " to="/favoritos">Favoritos</RouterLink>
+
 
       </div>
     </div>
   </nav>
 
-  <div class="container">
+  <div class="container text-center">
     <RouterView />
 
   </div>

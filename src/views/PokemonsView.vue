@@ -30,19 +30,28 @@ esto debe hacerse para que funcione el vue-router.
 import axios from "axios"
 import { ref } from "vue"
 import { RouterLink } from "vue-router";
+import { useGetData } from "../composables/getData.js"
 
-const pokemons = ref([])
+//estado global con pinia
+// import { useCounterStore } from "@/store/counter.js";
 
-const getData = async () => {
-    try {
-        const { data } = await axios.get("https://pokeapi.co/api/v2/pokemon")
-        pokemons.value = data.results
-    } catch (error) {
-        console.log(error)
-    }
-}
+// const useCounter = useCounterStore();
 
-getData()
+// const pokemons = ref([])
+
+//usando un composable en vez de la funcion getData
+const { data, getData, loading, error } = useGetData()
+
+// const getData = async () => {
+//     try {
+//         const { data } = await axios.get("https://pokeapi.co/api/v2/pokemon")
+//         pokemons.value = data.results
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
+getData("https://pokeapi.co/api/v2/pokemon")
 
 
 </script>
@@ -50,13 +59,36 @@ getData()
 
 
 <template>
-    <div class="container">
+    <!-- <div class="container">
         <h1>Pokemons</h1>
         <ul>
             <li v-for="pokemon in pokemons">
                 <RouterLink :to="`/pokemons/${pokemon.name}`">{{pokemon.name}}</RouterLink>
             </li>
         </ul>
-    </div>
+    </div> -->
 
+
+    <div class="container">
+
+        <h1>Pokemons</h1>
+        <p v-if="loading">Cargando información...</p>
+        <div class="alert alert-danger mt-2" v-if="error">{{error}}</div>
+        <div v-if="data">
+            <ul class="list-group">
+                <li class="list-group-item" v-for="pokemon in data.results">
+                    <RouterLink :to="`/pokemons/${pokemon.name}`">{{pokemon.name}}</RouterLink>
+                </li>
+            </ul>
+
+            <div class="mt-2">
+                <button :disabled="!data.previous" class="btn btn-success mr-4"
+                    @click="getData(data.previous)">Previous</button>
+                <button :disabled="!data.next" class="btn btn-primary " @click="getData(data.next)">Next</button>
+            </div>
+
+
+        </div>
+
+    </div>
 </template>
